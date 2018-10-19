@@ -16,20 +16,13 @@ Requirements
 Hosts
 =====
 
-* python
-* docker
 * bash
+* golang
 
 Targets
 =======
 
 Non sudo privileged access is required with ptrace_scope set to 0.
-
-* python (required)
-* ps
-* strace
-* iptables
-* frida
 
 Walkthrough
 ***********

@@ -4,6 +4,7 @@ import (
 	"github.com/coreos/go-iptables/iptables"
 	"github.com/spf13/cobra"
 	"github.com/tunnelshade/rinnegan/agent/log"
+	"os/exec"
 	"strings"
 )
 
@@ -48,10 +49,10 @@ var incomingCmd = &cobra.Command{
 }
 
 var delIncomingCmd = &cobra.Command{
-	Use:   "remove",
+	Use:   "remove PROTOCOL IP PORT REDIRECTIP:PORT",
 	Short: "Remove incoming traffic redirects",
 	Long:  "Remove incoming traffic redirects with iptables, call with <proto> <local-ip> <local-port> <remote_ip:port>",
-	Args:  cobra.MinimumNArgs(4),
+	Args:  cobra.ExactArgs(4),
 	Run: func(cmd *cobra.Command, args []string) {
 		log.Info("Interact with iptables")
 		ipt, err := iptables.New()
@@ -70,10 +71,10 @@ var delIncomingCmd = &cobra.Command{
 }
 
 var addIncomingCmd = &cobra.Command{
-	Use:   "add",
+	Use:   "add PROTOCOL IP PORT REDIRECTIP:PORT",
 	Short: "Redirect incoming traffic",
 	Long:  "Redirect incoming traffic with iptables, call with <proto> <local-ip> <local-port> <remote_ip:port>",
-	Args:  cobra.MinimumNArgs(4),
+	Args:  cobra.ExactArgs(4),
 	Run: func(cmd *cobra.Command, args []string) {
 		log.Info("Interact with iptables")
 		ipt, err := iptables.New()
@@ -96,13 +97,10 @@ var outgoingCmd = &cobra.Command{
 	Short: "Handle outgoing traffic rules",
 	Long:  "Handle redirect outgoing traffic rules with iptables",
 	Args:  cobra.MinimumNArgs(1),
-	Run: func(cmd *cobra.Command, args []string) {
-		log.Info("Interact with iptables")
-	},
 }
 
 var addOutgoingCmd = &cobra.Command{
-	Use:   "add",
+	Use:   "add PROTOCOL IP PORT REDIRECTIP:PORT",
 	Short: "Redirect outgoing traffic",
 	Long:  "Redirect outgoing traffic with iptables, call with <proto> <remote-ip> <remote-port> <redirect:port>",
 	Args:  cobra.MinimumNArgs(4),
@@ -120,7 +118,7 @@ var addOutgoingCmd = &cobra.Command{
 }
 
 var delOutgoingCmd = &cobra.Command{
-	Use:   "remove",
+	Use:   "remove PROTOCOL IP PORT REDIRECTIP:PORT",
 	Short: "Remove rule redirecting outgoing traffic",
 	Long:  "Remove rule redirecting outgoing traffic with iptables, call with <proto> <remote-ip> <remote-port> <redirect:port>",
 	Args:  cobra.MinimumNArgs(4),
@@ -145,5 +143,10 @@ func init() {
 	iptablesCmd.AddCommand(listIptablesCmd)
 	iptablesCmd.AddCommand(incomingCmd)
 	iptablesCmd.AddCommand(outgoingCmd)
-	rootCmd.AddCommand(iptablesCmd)
+
+	if _, err := exec.LookPath("iptables"); err != nil {
+		log.Warn("iptables not found in path, so modules disabled")
+	} else {
+		rootCmd.AddCommand(iptablesCmd)
+	}
 }
