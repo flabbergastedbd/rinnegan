@@ -1,0 +1,4 @@
+export RINNEGAN_HOSTS_FILE=./samples/hosts
+export RINNEGAN_INFLUX_HOST=http://influxdb:8086
+export RINNEGAN_DEBUG=false
+export RINNEGAN_DOCKER=false

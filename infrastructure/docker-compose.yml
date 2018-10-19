@@ -1,0 +1,23 @@
+influxdb:
+  image: influxdb:1.6
+  container_name: influxdb
+  ports:
+    - "8086:8086"
+    - "2003:2003"
+  environment:
+    - "INFLUXDB_DB=rinnegan"
+  volumes:
+    - ./data/influxdb:/var/lib/influxdb
+    - ./influxdb/provisioning/:/docker-entrypoint-initdb.d/
+grafana:
+  image: grafana/grafana:latest
+  container_name: grafana
+  ports:
+    - "3000:3000"
+  environment:
+    - "GF_SECURITY_ADMIN_PASSWORD=admin"
+  links:
+    - influxdb
+  volumes:
+    - ./grafana/provisioning/:/etc/grafana/provisioning/
+    - ./data/grafana:/var/lib/grafana
