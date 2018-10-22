@@ -21,6 +21,7 @@ function info {
 HOST_REGEX="$1"
 REMOTE_AGENT_DIR="/tmp/rinnegan"
 REMOTE_AGENT="$REMOTE_AGENT_DIR/agent"
+DOCKER_ARGS=""
 
 if [ "x$RINNEGAN_DEBUG" == "xtrue" ]; then
 	REMOTE_AGENT="$REMOTE_AGENT -v"
@@ -44,9 +45,10 @@ case "$2" in
 			HOST_EXECUTE_COMMAND='scp -r build/. $h:$REMOTE_AGENT_DIR/'
 		fi
 		if [ -n "$RINNEGAN_DOCKER" ]; then
+			DOCKER_ARGS="-d"
 			REMOTE_EXECUTE_COMMAND="$REMOTE_AGENT daemon start --influxdb $RINNEGAN_INFLUX_HOST"
-			echo "Deploy docker agents by daemon execing: docker exec --privileged -t -u root -d \$h $REMOTE_EXECUTE_COMMAND"
-			REMOTE_EXECUTE_COMMAND=""
+			# echo "Deploy docker agents by daemon execing: docker exec --privileged -t -u root -d \$h $REMOTE_EXECUTE_COMMAND"
+			# REMOTE_EXECUTE_COMMAND=""
 		else
 			REMOTE_EXECUTE_COMMAND="nohup $REMOTE_AGENT daemon start --influxdb $RINNEGAN_INFLUX_HOST > $REMOTE_AGENT_DIR/agent.log 2>&1 &"
 		fi
@@ -109,7 +111,7 @@ for h in $TARGETS; do
 		debug "Executing: $REMOTE_EXECUTE_COMMAND"
 		debug "-------------------------------------------------------------------------------------------------------"
 		if [ -n "$RINNEGAN_DOCKER" ]; then
-			docker exec -it -u root $h $REMOTE_EXECUTE_COMMAND
+			docker exec -it $DOCKER_ARGS -u root $h $REMOTE_EXECUTE_COMMAND
 		else
 			ssh $h "/bin/sh -c '$REMOTE_EXECUTE_COMMAND'"
 		fi

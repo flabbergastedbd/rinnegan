@@ -1,8 +1,8 @@
 package log
 
 import (
-	"os"
 	"fmt"
+	"os"
 
 	"github.com/sirupsen/logrus"
 )
@@ -15,7 +15,7 @@ func EnableDebug() {
 
 func init() {
 	formatter := &logrus.TextFormatter{
-	    FullTimestamp: true,
+		FullTimestamp: true,
 	}
 	log.SetFormatter(formatter)
 	log.SetOutput(os.Stdout)
