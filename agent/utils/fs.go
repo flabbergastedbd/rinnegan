@@ -1,9 +1,11 @@
 package utils
 
 import (
+	"io/ioutil"
 	"log"
 	"os"
 	"path/filepath"
+	"strings"
 )
 
 func CreateIfNotExists(path string) string {
@@ -26,4 +28,12 @@ func GetBinDir() string {
 func GetLogDir() string {
 	logDir := filepath.Join(GetBinDir(), "logs")
 	return CreateIfNotExists(logDir)
+}
+
+func ReadFile(path string) string {
+	data, err := ioutil.ReadFile(path)
+	if err != nil {
+		return ""
+	}
+	return strings.TrimSpace(string(data))
 }

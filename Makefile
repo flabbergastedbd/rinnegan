@@ -1,4 +1,4 @@
-.PHONY: linux_agent osx_agent clean
+.PHONY: linux_agent osx_agent windows_agent clean
 
 BASE_DIR:=$(shell pwd)
 GOARCH:=amd64
@@ -9,6 +9,10 @@ linux_agent:
 
 osx_agent: export GOOS := darwin
 osx_agent:
+	go build -o build/agent ./agent
+
+windows_agent: export GOOS := windows
+windows_agent:
 	go build -o build/agent ./agent
 
 clean:

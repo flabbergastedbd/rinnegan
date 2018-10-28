@@ -3,6 +3,7 @@ package module
 import (
 	"bufio"
 	"io"
+	"os"
 	"os/exec"
 
 	"github.com/tunnelshade/rinnegan/agent/log"
@@ -31,7 +32,7 @@ loop:
 		select {
 		case <-shutdown:
 			log.Info("Going to shutdown command")
-			cmd.Process.Kill()
+			cmd.Process.Signal(os.Interrupt)
 			break loop
 		default:
 			line, err = stderrReader.ReadString(byte('\n'))

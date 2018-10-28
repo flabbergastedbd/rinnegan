@@ -1,14 +1,18 @@
 Rinnegan
 ########
 
+   One who wields the Rinnegan is sent down from the heavens to become either a "God of Creation"
+   who will calm the world or a "God of Destruction" who will reduce everything to nothingness.
+
    Blessed are those who write good READMEs
    - Baba Blanka (fictitious)
 
-Why the hell this exists?
-*************************
+Why?
+****
 
-To help visualize in reverse engineering complex distributed systems. Helps in
-greatly decoding communications and events happening.
+To help with reverse engineering with complex distributed systems. Helps in
+greatly decoding communications and events happening in various components
+of a distributed system.
 
 Requirements
 ************

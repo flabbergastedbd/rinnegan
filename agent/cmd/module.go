@@ -4,6 +4,7 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/tunnelshade/rinnegan/agent/daemon"
 	"github.com/tunnelshade/rinnegan/agent/log"
+	"github.com/tunnelshade/rinnegan/agent/utils"
 	"net/url"
 	"os/exec"
 	"strings"
@@ -96,6 +97,8 @@ var fridaCmd = &cobra.Command{
 func init() {
 	if _, err := exec.LookPath("strace"); err != nil {
 		log.Warn("Strace module not available as it is not found in $PATH")
+	} else if utils.ReadFile("/proc/sys/kernel/yama/ptrace_scope") != "0" {
+		log.Warn("ptrace_scope != 0, please set it for strace to work")
 	} else {
 		runCmd.AddCommand(straceCmd)
 	}

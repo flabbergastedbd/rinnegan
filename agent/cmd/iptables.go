@@ -4,6 +4,7 @@ import (
 	"github.com/coreos/go-iptables/iptables"
 	"github.com/spf13/cobra"
 	"github.com/tunnelshade/rinnegan/agent/log"
+	"github.com/tunnelshade/rinnegan/agent/utils"
 	"os/exec"
 	"strings"
 )
@@ -11,10 +12,10 @@ import (
 var chains = [3]string{"PREROUTING", "OUTPUT", "POSTROUTING"}
 
 var iptablesCmd = &cobra.Command{
-	Use:   "iptables",
+	Use:   "iptables ",
 	Short: "Interact with iptables",
-	Long:  "Interact with iptables",
-	Args:  cobra.MinimumNArgs(1),
+	Long:  "Interact with iptables for network rerouting",
+	Args:  cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		log.Info("Interact with iptables")
 	},
@@ -22,8 +23,8 @@ var iptablesCmd = &cobra.Command{
 
 var listIptablesCmd = &cobra.Command{
 	Use:   "list",
-	Short: "List with iptables",
-	Long:  "List with iptables",
+	Short: "List iptables rules",
+	Long:  "List iptables rules",
 	Run: func(cmd *cobra.Command, args []string) {
 		log.Info("Listing with iptables")
 		ipt, err := iptables.New()
@@ -146,6 +147,9 @@ func init() {
 
 	if _, err := exec.LookPath("iptables"); err != nil {
 		log.Warn("iptables not found in path, so modules disabled")
+	} else if utils.ReadFile("/proc/sys/net/ipv4/ip_forward") != "1" {
+		log.Warn("Ip forwarding not enabled")
+		log.Warn("Enable ip forwarding: sysctl -w net.ipv4.ip_forward=1")
 	} else {
 		rootCmd.AddCommand(iptablesCmd)
 	}
