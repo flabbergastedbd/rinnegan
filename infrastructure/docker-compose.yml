@@ -10,7 +10,7 @@ influxdb:
     - ./data/influxdb:/var/lib/influxdb
     - ./influxdb/provisioning/:/docker-entrypoint-initdb.d/
 grafana:
-  image: grafana/grafana:latest
+  image: grafana/grafana:5.2.4
   container_name: grafana
   ports:
     - "3000:3000"
