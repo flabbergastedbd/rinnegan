@@ -4,6 +4,7 @@ import (
 	"io"
 	"net"
 	"net/http"
+	"net/url"
 	"os"
 	"strings"
 	"sync"
@@ -34,6 +35,8 @@ func (d *Daemon) Start() {
 	r.HandleFunc("/module/{moduleType}", d.addModule).Methods("POST")
 	r.HandleFunc("/module/{moduleName}", d.removeModule).Methods("DELETE")
 	d.wg.Add(1)
+	// Add default module first
+	d.appendModule("alive", url.Values{})
 	http.Serve(ln, r)
 }
 
@@ -61,14 +64,18 @@ func (d *Daemon) removeModule(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func (d *Daemon) addModule(w http.ResponseWriter, r *http.Request) {
-	log.Debug("Adding a new module")
-	vars := mux.Vars(r)
-	moduleType := vars["moduleType"]
+func (d *Daemon) appendModule(moduleType string, params url.Values) {
 	m := module.Add(moduleType, d.dbURL, d.wg)
 	d.modules = append(d.modules, m)
 	//Add number to group at last
 	d.wg.Add(1)
+	go m.Start(params)
+}
+
+func (d *Daemon) addModule(w http.ResponseWriter, r *http.Request) {
+	log.Debug("Adding a new module")
+	vars := mux.Vars(r)
+	moduleType := vars["moduleType"]
 	err := r.ParseForm()
 	if err != nil {
 		io.WriteString(w, err.Error())
@@ -77,7 +84,7 @@ func (d *Daemon) addModule(w http.ResponseWriter, r *http.Request) {
 	for k, v := range r.Form {
 		log.Debug("%s: %s", k, strings.Join(v, ","))
 	}
-	go m.Start(r.Form)
+	d.appendModule(moduleType, r.Form)
 }
 
 func (d *Daemon) stop(w http.ResponseWriter, r *http.Request) {

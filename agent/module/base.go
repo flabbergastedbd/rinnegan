@@ -83,6 +83,8 @@ func Add(moduleType string, dbURL string, wg *sync.WaitGroup) Module {
 		md = NewStrace(m)
 	case "frida":
 		md = NewFrida(m)
+	case "alive":
+		md = NewAlive(m)
 	}
 	return md
 }
