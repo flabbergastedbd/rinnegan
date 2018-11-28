@@ -94,6 +94,24 @@ var fridaCmd = &cobra.Command{
 	},
 }
 
+var netstatCmd = &cobra.Command{
+	Use:   "netstat PID",
+	Short: "Collect ESTABLISHED network connections",
+	Long:  "Collect ESTABLISHED network connections, if given PID will only look for that pid connections",
+	Args:  cobra.MaximumNArgs(1),
+	Run: func(cmd *cobra.Command, args []string) {
+		log.Info("Running netstat module")
+		data := url.Values{}
+		if len(args) != 0 {
+			data.Set("pid", args[0])
+		}
+		for k, v := range data {
+			log.Debug("%s: %s", k, strings.Join(v, ","))
+		}
+		log.Info(daemon.HTTPPost("/module/netstat", data))
+	},
+}
+
 func init() {
 	if _, err := exec.LookPath("strace"); err != nil {
 		log.Warn("Strace module not available as it is not found in $PATH")
@@ -109,6 +127,7 @@ func init() {
 		runCmd.AddCommand(fridaCmd)
 	}
 	runCmd.AddCommand(psCmd)
+	runCmd.AddCommand(netstatCmd)
 	moduleCmd.AddCommand(runCmd)
 	moduleCmd.AddCommand(listCmd)
 	moduleCmd.AddCommand(stopCmd)

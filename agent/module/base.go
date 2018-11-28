@@ -85,6 +85,8 @@ func Add(moduleType string, dbURL string, wg *sync.WaitGroup) Module {
 		md = NewFrida(m)
 	case "alive":
 		md = NewAlive(m)
+	case "netstat":
+		md = NewNetstat(m)
 	}
 	return md
 }

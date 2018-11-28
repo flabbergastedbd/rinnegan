@@ -13,11 +13,11 @@ import (
 
 const syscallInsertStatement = `syscall,pid=%s,hostname=%s,syscall=%s hostname="%s",pid=%s,syscall="%s",%s,return=%s %s000`
 
-var pidRegex *regexp.Regexp = regexp.MustCompile(`^\[pid\s+([0-9]+)\]`)
-var timestampRegex *regexp.Regexp = regexp.MustCompile(`(\d{9,}\.\d{6}) `)
-var syscallRegex *regexp.Regexp = regexp.MustCompile(` ([a-za-z_]+)\(`)
-var argsRegex *regexp.Regexp = regexp.MustCompile(`[\( ]([a-z_\|]+|\d+|".*?\"|\{.*\})[,\)]`)
-var returnRegex *regexp.Regexp = regexp.MustCompile(` = (-?\d+)`)
+var pidRegex = regexp.MustCompile(`^\[pid\s+([0-9]+)\]`)
+var timestampRegex = regexp.MustCompile(`(\d{9,}\.\d{6}) `)
+var syscallRegex = regexp.MustCompile(` ([a-za-z_]+)\(`)
+var argsRegex = regexp.MustCompile(`[\( ]([a-z_\|]+|\d+|".*?\"|\{.*\})[,\)]`)
+var returnRegex = regexp.MustCompile(` = (-?\d+)`)
 
 func getFirstSubmatch(matches []string) string {
 	match := ""

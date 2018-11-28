@@ -16,7 +16,7 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "iteration": 1543351329569,
+  "iteration": 1543385665576,
   "links": [],
   "panels": [
     {
@@ -43,8 +43,15 @@
           "id": 52,
           "links": [],
           "pageSize": null,
-          "repeat": null,
+          "repeat": "host",
           "repeatDirection": "v",
+          "scopedVars": {
+            "host": {
+              "selected": true,
+              "text": "553095e4149c",
+              "value": "553095e4149c"
+            }
+          },
           "scroll": true,
           "showHeader": true,
           "sort": {
@@ -77,7 +84,7 @@
               ],
               "orderByTime": "ASC",
               "policy": "default",
-              "query": "SELECT hostname,interface,ip FROM \"agent\"",
+              "query": "SELECT hostname,interface,ip FROM \"agent\" WHERE ip != ''  ORDER BY time DESC",
               "rawQuery": true,
               "refId": "A",
               "resultFormat": "table",
@@ -98,7 +105,7 @@
               "tags": []
             }
           ],
-          "title": "Interfaces",
+          "title": "Interfaces ($host)",
           "transform": "table",
           "transparent": true,
           "type": "table"
@@ -115,140 +122,6 @@
         "x": 0,
         "y": 1
       },
-      "id": 50,
-      "panels": [
-        {
-          "columns": [],
-          "datasource": "InfluxDB",
-          "description": "TCP, UDP & Unix listening sockets",
-          "fontSize": "100%",
-          "gridPos": {
-            "h": 10,
-            "w": 24,
-            "x": 0,
-            "y": 2
-          },
-          "id": 53,
-          "links": [],
-          "pageSize": null,
-          "repeatDirection": "v",
-          "scroll": true,
-          "showHeader": true,
-          "sort": {
-            "col": 5,
-            "desc": true
-          },
-          "styles": [
-            {
-              "alias": "Time",
-              "dateFormat": "YYYY-MM-DD HH:mm:ss",
-              "pattern": "Time",
-              "type": "hidden"
-            },
-            {
-              "alias": "",
-              "colorMode": null,
-              "colors": [
-                "rgba(245, 54, 54, 0.9)",
-                "rgba(237, 129, 40, 0.89)",
-                "rgba(50, 172, 45, 0.97)"
-              ],
-              "dateFormat": "YYYY-MM-DD HH:mm:ss",
-              "decimals": 2,
-              "mappingType": 1,
-              "pattern": "pid",
-              "thresholds": [],
-              "type": "string",
-              "unit": "short"
-            },
-            {
-              "alias": "",
-              "colorMode": null,
-              "colors": [
-                "rgba(245, 54, 54, 0.9)",
-                "rgba(237, 129, 40, 0.89)",
-                "rgba(50, 172, 45, 0.97)"
-              ],
-              "dateFormat": "YYYY-MM-DD HH:mm:ss",
-              "decimals": 2,
-              "mappingType": 1,
-              "pattern": "port",
-              "thresholds": [],
-              "type": "string",
-              "unit": "short"
-            },
-            {
-              "alias": "",
-              "colorMode": null,
-              "colors": [
-                "rgba(245, 54, 54, 0.9)",
-                "rgba(237, 129, 40, 0.89)",
-                "rgba(50, 172, 45, 0.97)"
-              ],
-              "decimals": 2,
-              "pattern": "/.*/",
-              "thresholds": [],
-              "type": "number",
-              "unit": "short"
-            }
-          ],
-          "targets": [
-            {
-              "groupBy": [
-                {
-                  "params": [
-                    "$__interval"
-                  ],
-                  "type": "time"
-                },
-                {
-                  "params": [
-                    "null"
-                  ],
-                  "type": "fill"
-                }
-              ],
-              "orderByTime": "ASC",
-              "policy": "default",
-              "query": "SELECT hostname,ip,port,protocol,pid,type FROM \"socket\" WHERE $timeFilter",
-              "rawQuery": true,
-              "refId": "A",
-              "resultFormat": "table",
-              "select": [
-                [
-                  {
-                    "params": [
-                      "value"
-                    ],
-                    "type": "field"
-                  },
-                  {
-                    "params": [],
-                    "type": "mean"
-                  }
-                ]
-              ],
-              "tags": []
-            }
-          ],
-          "title": "sockets",
-          "transform": "table",
-          "transparent": true,
-          "type": "table"
-        }
-      ],
-      "repeat": null,
-      "title": "sockets",
-      "type": "row"
-    },
-    {
-      "collapsed": true,
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 2
-      },
       "id": 17,
       "panels": [
         {
@@ -260,7 +133,7 @@
             "h": 6,
             "w": 24,
             "x": 0,
-            "y": 3
+            "y": 2
           },
           "id": 2,
           "links": [],
@@ -396,7 +269,298 @@
         "h": 1,
         "w": 24,
         "x": 0,
+        "y": 2
+      },
+      "id": 50,
+      "panels": [
+        {
+          "columns": [],
+          "datasource": "InfluxDB",
+          "description": "TCP, UDP & Unix listening sockets",
+          "fontSize": "100%",
+          "gridPos": {
+            "h": 10,
+            "w": 24,
+            "x": 0,
+            "y": 3
+          },
+          "id": 53,
+          "links": [],
+          "pageSize": null,
+          "repeatDirection": "v",
+          "scroll": true,
+          "showHeader": true,
+          "sort": {
+            "col": 5,
+            "desc": true
+          },
+          "styles": [
+            {
+              "alias": "Time",
+              "dateFormat": "YYYY-MM-DD HH:mm:ss",
+              "pattern": "Time",
+              "type": "hidden"
+            },
+            {
+              "alias": "",
+              "colorMode": null,
+              "colors": [
+                "rgba(245, 54, 54, 0.9)",
+                "rgba(237, 129, 40, 0.89)",
+                "rgba(50, 172, 45, 0.97)"
+              ],
+              "dateFormat": "YYYY-MM-DD HH:mm:ss",
+              "decimals": 2,
+              "mappingType": 1,
+              "pattern": "pid",
+              "thresholds": [],
+              "type": "string",
+              "unit": "short"
+            },
+            {
+              "alias": "",
+              "colorMode": null,
+              "colors": [
+                "rgba(245, 54, 54, 0.9)",
+                "rgba(237, 129, 40, 0.89)",
+                "rgba(50, 172, 45, 0.97)"
+              ],
+              "dateFormat": "YYYY-MM-DD HH:mm:ss",
+              "decimals": 2,
+              "mappingType": 1,
+              "pattern": "port",
+              "thresholds": [],
+              "type": "string",
+              "unit": "short"
+            },
+            {
+              "alias": "",
+              "colorMode": null,
+              "colors": [
+                "rgba(245, 54, 54, 0.9)",
+                "rgba(237, 129, 40, 0.89)",
+                "rgba(50, 172, 45, 0.97)"
+              ],
+              "decimals": 2,
+              "pattern": "/.*/",
+              "thresholds": [],
+              "type": "number",
+              "unit": "short"
+            }
+          ],
+          "targets": [
+            {
+              "groupBy": [
+                {
+                  "params": [
+                    "$__interval"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "null"
+                  ],
+                  "type": "fill"
+                }
+              ],
+              "orderByTime": "ASC",
+              "policy": "default",
+              "query": "SELECT hostname,ip,port,protocol,pid,type FROM \"socket\" WHERE $timeFilter",
+              "rawQuery": true,
+              "refId": "A",
+              "resultFormat": "table",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "value"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "mean"
+                  }
+                ]
+              ],
+              "tags": []
+            }
+          ],
+          "title": "sockets",
+          "transform": "table",
+          "transparent": true,
+          "type": "table"
+        }
+      ],
+      "repeat": null,
+      "title": "sockets",
+      "type": "row"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
         "y": 3
+      },
+      "id": 59,
+      "panels": [
+        {
+          "columns": [],
+          "datasource": "InfluxDB",
+          "description": "ESTABLISHED connections",
+          "fontSize": "100%",
+          "gridPos": {
+            "h": 8,
+            "w": 24,
+            "x": 0,
+            "y": 4
+          },
+          "id": 60,
+          "links": [],
+          "minSpan": null,
+          "pageSize": null,
+          "repeat": "host",
+          "repeatDirection": "v",
+          "scroll": true,
+          "showHeader": true,
+          "sort": {
+            "col": null,
+            "desc": false
+          },
+          "styles": [
+            {
+              "alias": "Time",
+              "dateFormat": "YYYY-MM-DD HH:mm:ss",
+              "pattern": "Time",
+              "type": "date"
+            },
+            {
+              "alias": "",
+              "colorMode": null,
+              "colors": [
+                "rgba(245, 54, 54, 0.9)",
+                "rgba(237, 129, 40, 0.89)",
+                "rgba(50, 172, 45, 0.97)"
+              ],
+              "dateFormat": "YYYY-MM-DD HH:mm:ss",
+              "decimals": 2,
+              "mappingType": 1,
+              "pattern": "pid",
+              "thresholds": [],
+              "type": "string",
+              "unit": "short"
+            },
+            {
+              "alias": "",
+              "colorMode": null,
+              "colors": [
+                "rgba(245, 54, 54, 0.9)",
+                "rgba(237, 129, 40, 0.89)",
+                "rgba(50, 172, 45, 0.97)"
+              ],
+              "dateFormat": "YYYY-MM-DD HH:mm:ss",
+              "decimals": 2,
+              "mappingType": 1,
+              "pattern": "/.*port/",
+              "thresholds": [],
+              "type": "string",
+              "unit": "short"
+            },
+            {
+              "alias": "",
+              "colorMode": null,
+              "colors": [
+                "rgba(245, 54, 54, 0.9)",
+                "rgba(237, 129, 40, 0.89)",
+                "rgba(50, 172, 45, 0.97)"
+              ],
+              "decimals": 2,
+              "pattern": "/.*/",
+              "thresholds": [],
+              "type": "number",
+              "unit": "short"
+            }
+          ],
+          "targets": [
+            {
+              "groupBy": [
+                {
+                  "params": [
+                    "$__interval"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "null"
+                  ],
+                  "type": "fill"
+                }
+              ],
+              "hide": false,
+              "measurement": "VA-lca1-b1-stg-esx01-stage-linkedin-biz-director",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "query": "SELECT \"hostname\", \"pid\", \"laddr\", \"lport\", \"raddr\", \"rport\", \"protocol\",\"type\" FROM \"netconn\" WHERE \"hostname\" = '$host' AND $timeFilter ORDER BY time DESC",
+              "rawQuery": true,
+              "refId": "A",
+              "resultFormat": "table",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "pid"
+                    ],
+                    "type": "field"
+                  }
+                ],
+                [
+                  {
+                    "params": [
+                      "ppid"
+                    ],
+                    "type": "field"
+                  }
+                ],
+                [
+                  {
+                    "params": [
+                      "user"
+                    ],
+                    "type": "field"
+                  }
+                ],
+                [
+                  {
+                    "params": [
+                      "command"
+                    ],
+                    "type": "field"
+                  }
+                ]
+              ],
+              "tags": []
+            }
+          ],
+          "title": "$host- connections",
+          "transform": "table",
+          "transparent": true,
+          "type": "table"
+        }
+      ],
+      "title": "connections",
+      "type": "row"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 4
       },
       "id": 19,
       "panels": [
@@ -559,7 +723,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 10
+        "y": 5
       },
       "id": 12,
       "panels": [
@@ -574,7 +738,7 @@
             "h": 7,
             "w": 24,
             "x": 0,
-            "y": 5
+            "y": 14
           },
           "hideTimeOverride": false,
           "id": 5,
@@ -744,7 +908,7 @@
             "h": 7,
             "w": 24,
             "x": 0,
-            "y": 12
+            "y": 21
           },
           "hideTimeOverride": false,
           "id": 27,
@@ -913,7 +1077,7 @@
             "h": 8,
             "w": 24,
             "x": 0,
-            "y": 19
+            "y": 28
           },
           "id": 3,
           "links": [],
@@ -1063,7 +1227,7 @@
             "h": 8,
             "w": 24,
             "x": 0,
-            "y": 27
+            "y": 36
           },
           "id": 7,
           "links": [],
@@ -1281,7 +1445,7 @@
     ]
   },
   "time": {
-    "from": "now-5m",
+    "from": "now-15m",
     "to": "now"
   },
   "timepicker": {
@@ -1312,5 +1476,5 @@
   "timezone": "browser",
   "title": "Rinnegan",
   "uid": "cfd4zq0iz",
-  "version": 3
+  "version": 5
 }
