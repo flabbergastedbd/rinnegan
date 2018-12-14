@@ -4,8 +4,6 @@ Rinnegan
    One who wields the Rinnegan is sent down from the heavens to become either a "God of Creation"
    who will calm the world or a "God of Destruction" who will reduce everything to nothingness.
 
-   Blessed are those who write good READMEs
-   - Baba Blanka (fictitious)
 
 Why?
 ****
