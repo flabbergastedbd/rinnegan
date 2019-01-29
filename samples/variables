@@ -1,4 +1,12 @@
+# Path to hosts file, can be relative or absolute
 export RINNEGAN_HOSTS_FILE=./samples/hosts
+
+# Ensure appropriate hostname so that agents on targets can reach this to push data
+# Eg: If using docker containers, add an entry in host's /etc/hosts that redirects
+# this domain to localhost as containers pick up dns resolution on host generally.
 export RINNEGAN_INFLUX_HOST=http://influxdb:8086
-export RINNEGAN_DEBUG=false
+
+# Set to `true` when playing with docker containers
 export RINNEGAN_DOCKER=false
+
+export RINNEGAN_DEBUG=false
