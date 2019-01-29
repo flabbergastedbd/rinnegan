@@ -24,34 +24,15 @@ Hosts
 Targets
 =======
 
-Non sudo privileged access is required with ptrace_scope set to 0 for stracing.
+Privileged access without sudo is required.
 
 Walkthrough
 ***********
 
-TBD
+For now: https://tunnelshade.in/blog/2018/12/rinnegan-walkthrough/
 
-Utilities
-*********
-
-1. Network Routing
-==================
-
-Prerequisites
-^^^^^^^^^^^^^
-
-* Iptables need to be installed and kernel module need to be enabled on target.
-
-.. code-block::
-
-   # Disabled by default!
-   $> echo "1" > /proc/sys/net/ipv4/ip_forward
-
-   # Load iptables module, if not already
-   $> modprobe ip_tables
-
-Usage
-^^^^^
+Tricks
+^^^^^^
 
 *INCOMING = PREROUTING dnat*
 *OUTGOING = OUTPUT dnat*
