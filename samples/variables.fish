@@ -10,3 +10,6 @@ set -gx RINNEGAN_INFLUX_HOST http://influxdb:8086
 set -gx RINNEGAN_DOCKER false
 
 set -gx RINNEGAN_DEBUG false
+
+# Set to `true` when you are sshing as a user and use sudo for privesc
+set -gx RINNEGAN_SUDO false

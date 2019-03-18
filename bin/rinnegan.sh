@@ -20,7 +20,15 @@ function info {
 
 HOST_REGEX="$1"
 REMOTE_AGENT_DIR="/tmp/rinnegan"
-REMOTE_AGENT="$REMOTE_AGENT_DIR/agent"
+
+if [ "x$RINNEGAN_SUDO" == "xtrue" ]; then
+	REMOTE_AGENT="sudo $REMOTE_AGENT_DIR/agent"
+	WIPE_COMMAND="sudo rm -rf $REMOTE_AGENT_DIR"
+else
+	REMOTE_AGENT="$REMOTE_AGENT_DIR/agent"
+	WIPE_COMMAND="rm -rf $REMOTE_AGENT_DIR"
+fi
+
 DOCKER_ARGS=""
 
 if [ "x$RINNEGAN_DEBUG" == "xtrue" ]; then
@@ -63,7 +71,7 @@ case "$2" in
 		;;
         wipe)
 		HOST_EXECUTE_COMMAND=""
-		REMOTE_EXECUTE_COMMAND="rm -rf $REMOTE_AGENT_DIR"
+		REMOTE_EXECUTE_COMMAND="$WIPE_COMMAND"
 		;;
         exec)
 		shift

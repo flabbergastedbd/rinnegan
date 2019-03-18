@@ -10,3 +10,6 @@ export RINNEGAN_INFLUX_HOST=http://influxdb:8086
 export RINNEGAN_DOCKER=false
 
 export RINNEGAN_DEBUG=false
+
+# Set to `true` when you are sshing as a user and use sudo for privesc
+export RINNEGAN_SUDO=false
