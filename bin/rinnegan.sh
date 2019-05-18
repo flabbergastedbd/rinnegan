@@ -121,7 +121,7 @@ for h in $TARGETS; do
 		if [ -n "$RINNEGAN_DOCKER" ]; then
 			docker exec -it $DOCKER_ARGS -u root $h $REMOTE_EXECUTE_COMMAND
 		else
-			ssh $h "/bin/sh -c '$REMOTE_EXECUTE_COMMAND'"
+			ssh -t $h "/bin/sh -c '$REMOTE_EXECUTE_COMMAND'"
 		fi
 		debug ""
 	fi
