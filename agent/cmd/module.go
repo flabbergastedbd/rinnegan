@@ -6,6 +6,7 @@ import (
 	"github.com/tunnelshade/rinnegan/agent/log"
 	"github.com/tunnelshade/rinnegan/agent/utils"
 	"net/url"
+	"os"
 	"os/exec"
 	"strings"
 )
@@ -115,8 +116,10 @@ var netstatCmd = &cobra.Command{
 func init() {
 	if _, err := exec.LookPath("strace"); err != nil {
 		log.Warn("Strace module not available as it is not found in $PATH")
-	} else if utils.ReadFile("/proc/sys/kernel/yama/ptrace_scope") != "0" {
-		log.Warn("ptrace_scope != 0, please set it for strace to work")
+	} else if _, err := os.Stat("/proc/sys/kernel/yama/ptrace_scope"); err == nil {
+		if utils.ReadFile("/proc/sys/kernel/yama/ptrace_scope") != "0" {
+			log.Warn("ptrace_scope != 0, please set it for strace to work")
+		}
 	} else {
 		runCmd.AddCommand(straceCmd)
 	}
